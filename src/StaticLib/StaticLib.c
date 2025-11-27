@@ -17,7 +17,8 @@ void initialize(STACK* s, size_t mem_size)
 
 	s->stack_memory = (int*)calloc(num_elements, sizeof(int));
 
-	if (s->stack_memory == NULL) {
+	if (s->stack_memory == NULL) 
+	{
 		s->stack_pointer = NULL;
 		s->end = NULL;
 		return;
@@ -32,7 +33,8 @@ void finalize(STACK* s)
 {
 	if (s == NULL) return;
 
-	if (s->stack_memory != NULL) {
+	if (s->stack_memory != NULL) 
+	{
 		free(s->stack_memory);
 	}
 	s->stack_memory = NULL;
@@ -45,7 +47,8 @@ bool push(STACK* s, int val)
 {
 	if (s == NULL) return false;
 
-	if (s->stack_pointer >= s->end) {
+	if (s->stack_pointer >= s->end)
+	{
 		return false;
 	}
 
@@ -62,12 +65,14 @@ bool push_array(STACK* s, int* addr, int num)
 
 	size_t remaining_capacity = s->end - s->stack_pointer;
 
-	if (remaining_capacity < num) {
+	if (remaining_capacity < num) 
+	{
 		return false;
 	}
 
 	// **維持**: addr[0]がスタックのトップになるように、配列を逆順に格納 (TEST_METHOD(まとめて入れてバラバラに取り出す)合格のため)
-	for (int i = 0; i < num; i++) {
+	for (int i = 0; i < num; i++) 
+	{
 		s->stack_pointer[i] = addr[num - 1 - i];
 	}
 
@@ -81,7 +86,8 @@ int pop(STACK* s)
 {
 	if (s == NULL) return 0;
 
-	if (s->stack_pointer <= s->stack_memory) {
+	if (s->stack_pointer <= s->stack_memory) 
+	{
 		return 0;
 	}
 
@@ -100,13 +106,10 @@ int pop_array(STACK* s, int* addr, int num)
 
 	int* pop_start_addr = s->stack_pointer - actual_pop_count;
 
-	// 1. ポインタを更新
+	
 	s->stack_pointer = pop_start_addr;
 
-	// 2. データをコピー (LIFO順に戻す: 最新の要素をaddr[0]に格納)
 	for (int i = 0; i < actual_pop_count; i++) {
-		// スタックのトップに近かった要素 (pop_start_addr の末尾) から順に、
-		// addr の先頭 (addr[0]) から格納する。
 		addr[i] = pop_start_addr[actual_pop_count - 1 - i];
 	}
 
